@@ -86,7 +86,7 @@ function updateTotals() {
     const items = expenseList.children;
 
     expensesQuantity.textContent = `${items.length} ${
-      items.lenght > 1 ? "despesas" : "despesa"
+      items.length > 1 ? "despesas" : "despesa"
     }`;
 
     let total = 0;
@@ -95,7 +95,7 @@ function updateTotals() {
       const itemAmount = items[item].querySelector(".expense-amount");
 
       let value = itemAmount.textContent
-        .replace(/[^\d]/g, "")
+        .replace(/[^\d,]/g, "")
         .replace(",", ".");
 
       value = parseFloat(value);
@@ -109,7 +109,14 @@ function updateTotals() {
       total += Number(value);
     }
 
-    expensesTotal.textContent = total;
+    const symbolBRL = document.createElement("small");
+    symbolBRL.textContent = "R$";
+
+    total = formatCurrencyBRL(total).toUpperCase().replace("R$", "");
+
+    expensesTotal.innerHTML = "";
+
+    expensesTotal.append(symbolBRL, total);
   } catch (error) {
     console.log(error);
     alert("Não foi possível atualizar os totais.");
